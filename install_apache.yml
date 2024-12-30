@@ -20,3 +20,21 @@
       name: libapache2-mod-php
       state: latest
     when: ansible_distribution == "Ubuntu"
+
+  - name: update repo index for Archlinux
+    pacman:
+      update_cache: yes
+    when: ansible_distribution == "Archlinux"
+
+  - name: install apache2 package
+    pacman:
+      name: apache2
+      state: latest
+    when: ansible_distribution == "Archlinux"
+
+  - name: add php support for apache
+    pacman:
+      name: libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Archlinux"
+
