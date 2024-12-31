@@ -7,34 +7,30 @@
   - name: update repo index
     apt:
       update_cache: yes
-    when: ansible_distribution in ["Debian", "Ubuntu"]
+    when: ansible_distribution in ["Debian", "Ubuntu", "Pop!_OS"]
 
   - name: install apache2 package
     apt:
       name: apache2
       state: latest
-    when: ansible_distribution == "Ubuntu"
+    when: ansible_distribution in ["Debian", "Ubuntu", "Pop!_OS"] 
 
   - name: add php support for apache
     apt:
       name: libapache2-mod-php
       state: latest
-    when: ansible_distribution == "Ubuntu"
+    when: ansible_distribution in ["Debian", "Ubuntu", "Pop!_OS"]
 
-  - name: update repo index for Archlinux
-    pacman:
-      update_cache: yes
-    when: ansible_distribution == "Archlinux"
+  - name: install Nginx package
+    yum:
+      name: nginx
+      state: present
+    when: ansible_distribution == "Fedora"
 
-  - name: install apache2 package
-    pacman:
-      name: apache2
-      state: latest
-    when: ansible_distribution == "Archlinux"
-
-  - name: add php support for apache
-    pacman:
-      name: libapache2-mod-php
-      state: latest
-    when: ansible_distribution == "Archlinux"
+  - name: Ensure Nginx Service is running
+    service:
+      name: nginx
+      state: started
+      enabled: yes
+    when: ansible_distribution == "Fedora"
 
